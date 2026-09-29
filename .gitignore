@@ -1,0 +1,13 @@
+node_modules/
+.next/
+.env
+.env.local
+__pycache__/
+.venv/
+.DS_Store
+KEYS.env
+_upload.tgz
+*.env.local
+*.pem
+.vercel/
+_to_delete/
