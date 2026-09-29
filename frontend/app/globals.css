@@ -1,0 +1,132 @@
+/* =====================================================================
+   AccountPulse design system
+   - Glassmorphism  -> structure (header, sidebar, panels): see-through,
+                       blurred, lets the moving background glow through.
+   - Claymorphism   -> things you touch (buttons, toggles, chips, icon
+                       buttons, avatars): soft, puffy, pressable.
+   Rule of thumb: glass holds information, clay takes action.
+   ===================================================================== */
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette */
+  --color-mist: #e8ecf6;      /* app background */
+  --color-ink: #1c2340;       /* primary text */
+  --color-slate: #5b6485;     /* secondary text */
+  --color-pulse: #4b4ded;     /* primary action / brand */
+  --color-pulse-soft: #e3e3fd;
+  --color-coral: #e5485a;     /* high risk */
+  --color-amber: #d98a1c;     /* medium risk */
+  --color-mint: #1a9e70;      /* low risk / healthy */
+  --color-lilac: #b9b3f5;     /* background glow */
+  --color-sky: #9fd4f2;       /* background glow */
+  --color-peach: #f7c6b5;     /* background glow */
+
+  --font-display: "Sora", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
+}
+
+html,
+body {
+  background: var(--color-mist);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+@layer components {
+  /* ---------- Glass: panels, header, sidebar ---------- */
+  .glass {
+    background: rgba(255, 255, 255, 0.46);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 10px 34px rgba(40, 50, 110, 0.1);
+  }
+  .glass-strong {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(22px) saturate(170%);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    border: 1px solid rgba(255, 255, 255, 0.85);
+    box-shadow: 0 14px 40px rgba(40, 50, 110, 0.14);
+  }
+
+  /* ---------- Clay: buttons, toggles, chips, icon buttons ---------- */
+  .clay {
+    background: #eef1f8;
+    box-shadow:
+      8px 8px 18px rgba(155, 165, 200, 0.55),
+      -6px -6px 16px rgba(255, 255, 255, 0.95),
+      inset 2px 2px 4px rgba(255, 255, 255, 0.85),
+      inset -3px -3px 6px rgba(155, 165, 200, 0.25);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .clay:hover {
+    box-shadow:
+      10px 10px 22px rgba(155, 165, 200, 0.6),
+      -7px -7px 18px rgba(255, 255, 255, 1),
+      inset 2px 2px 4px rgba(255, 255, 255, 0.9),
+      inset -3px -3px 6px rgba(155, 165, 200, 0.25);
+  }
+  .clay:active,
+  .clay-pressed {
+    box-shadow:
+      inset 5px 5px 10px rgba(155, 165, 200, 0.55),
+      inset -5px -5px 10px rgba(255, 255, 255, 0.9);
+  }
+  /* Filled clay for the primary action */
+  .clay-primary {
+    background: linear-gradient(145deg, #6466f5, #3f41d6);
+    color: white;
+    box-shadow:
+      8px 8px 18px rgba(75, 77, 237, 0.35),
+      -5px -5px 14px rgba(255, 255, 255, 0.9),
+      inset 2px 2px 5px rgba(255, 255, 255, 0.35),
+      inset -3px -3px 6px rgba(20, 20, 120, 0.3);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .clay-primary:active {
+    box-shadow:
+      inset 4px 4px 10px rgba(20, 20, 120, 0.45),
+      inset -3px -3px 8px rgba(255, 255, 255, 0.25);
+  }
+  /* Recessed well for inputs (search, text fields) */
+  .clay-inset {
+    background: #eef1f8;
+    box-shadow:
+      inset 4px 4px 9px rgba(155, 165, 200, 0.5),
+      inset -4px -4px 9px rgba(255, 255, 255, 0.95);
+  }
+
+  /* Visible keyboard focus everywhere */
+  .focus-ring:focus-visible {
+    outline: 3px solid rgba(75, 77, 237, 0.55);
+    outline-offset: 3px;
+  }
+}
+
+/* Thin, quiet scrollbars inside panels */
+.scroll-quiet::-webkit-scrollbar {
+  width: 6px;
+}
+.scroll-quiet::-webkit-scrollbar-thumb {
+  background: rgba(91, 100, 133, 0.25);
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

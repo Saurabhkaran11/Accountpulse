@@ -1,0 +1,103 @@
+{
+  "_comment": "Page registry for the front-end agent. status 'confirmed' = reviewed and approved: the agent may improve it but must never delete or rename it. 'draft' pages can still change freely. Run `npm run verify` after every change.",
+  "pages": [
+    {
+      "route": "/",
+      "file": "app/page.tsx",
+      "title": "Landing page",
+      "status": "draft",
+      "confirmedOn": null
+    },
+    {
+      "route": "/dashboard",
+      "file": "app/dashboard/page.tsx",
+      "title": "Overview",
+      "status": "draft",
+      "confirmedOn": null
+    },
+    {
+      "route": "/dashboard/accounts",
+      "file": "app/dashboard/accounts/page.tsx",
+      "title": "Accounts list",
+      "status": "draft",
+      "confirmedOn": null
+    },
+    {
+      "route": "/dashboard/accounts/acme-logistics",
+      "file": "app/dashboard/accounts/[id]/page.tsx",
+      "title": "Account detail (sample id)",
+      "status": "draft",
+      "confirmedOn": null
+    },
+    {
+      "route": "/dashboard/signals",
+      "file": "app/dashboard/signals/page.tsx",
+      "title": "Signals timeline",
+      "status": "draft",
+      "confirmedOn": null
+    },
+    {
+      "route": "/dashboard/competitors",
+      "file": "app/dashboard/competitors/page.tsx",
+      "title": "Competitors",
+      "status": "draft",
+      "confirmedOn": null
+    },
+    {
+      "route": "/dashboard/live",
+      "file": "app/dashboard/live/page.tsx",
+      "title": "Live check (real SEC data)",
+      "status": "draft",
+      "confirmedOn": null
+    },
+    {
+      "route": "/dashboard/graph",
+      "file": "app/dashboard/graph/page.tsx",
+      "title": "Relationship map",
+      "status": "draft",
+      "confirmedOn": null
+    },
+    {
+      "route": "/dashboard/ask",
+      "file": "app/dashboard/ask/page.tsx",
+      "title": "Ask AccountPulse (AI chat)",
+      "status": "draft",
+      "confirmedOn": null
+    },
+    {
+      "route": "/dashboard/actions",
+      "file": "app/dashboard/actions/page.tsx",
+      "title": "Rescue actions (AI drafts)",
+      "status": "draft",
+      "confirmedOn": null
+    },
+    {
+      "route": "/dashboard/briefings",
+      "file": "app/dashboard/briefings/page.tsx",
+      "title": "Daily briefing",
+      "status": "draft",
+      "confirmedOn": null
+    },
+    {
+      "route": "/dashboard/integrations",
+      "file": "app/dashboard/integrations/page.tsx",
+      "title": "Integrations",
+      "status": "draft",
+      "confirmedOn": null
+    },
+    {
+      "route": "/dashboard/settings",
+      "file": "app/dashboard/settings/page.tsx",
+      "title": "Settings",
+      "status": "draft",
+      "confirmedOn": null
+    },
+    {
+      "route": "/dashboard/profile",
+      "file": "app/dashboard/profile/page.tsx",
+      "title": "Profile",
+      "status": "draft",
+      "confirmedOn": null
+    }
+  ]
+}
