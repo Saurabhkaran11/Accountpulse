@@ -1,0 +1,28 @@
+flowchart LR
+  U([Customer success manager]) --> FE
+
+  subgraph FE[Frontend - Next.js 16 on Vercel or Vultr]
+    P[Dashboard pages<br/>React 19 + Tailwind + framer-motion]
+    R["/api/live/:ticker<br/>Next.js route handler"]
+  end
+
+  subgraph BE[Agent API - FastAPI on Vultr or DuploCloud]
+    S["/scan pipeline"]
+    A["/ask"]
+  end
+
+  P -- fetch --> R
+  P -- "fetch (NEXT_PUBLIC_API_URL)" --> A
+  P -. "Run scan (planned)" .-> S
+
+  R --> SEC[(SEC EDGAR<br/>filings + revenue)]
+  R -. optional .-> CR
+
+  S --> MG[Merge.dev<br/>CRM + tickets]
+  S --> BR[Brave Search<br/>news]
+  S --> SW[Similarweb<br/>competitor traffic]
+  S --> CR[Crusoe<br/>LLM reasoning]
+  S --> OR[OpenRouter to Nebius<br/>critic model]
+  S --> NJ[(Neo4j AuraDB<br/>knowledge graph)]
+  A --> CR
+  A -. planned text-to-Cypher .-> NJ

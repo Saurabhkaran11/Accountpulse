@@ -1,0 +1,20 @@
+sequenceDiagram
+  autonumber
+  actor User
+  participant Page as Account detail page
+  participant AI as Draft generator
+  participant Clip as Clipboard
+  participant Toast as Toast
+
+  User->>Page: Open Acme Logistics (risk 86)
+  Page-->>User: Why this score, evidence, critic badge, next step
+  User->>Page: Click Draft email
+  Page->>AI: Account facts and recommended step
+  Note over AI: Today: template from account data<br/>Next: Crusoe writes it in the owner's voice
+  AI-->>Page: Draft email text
+  Page-->>User: Types the draft out live
+  User->>Page: Click Copy
+  Page->>Clip: writeText(draft)
+  Page->>Toast: "Email copied"
+  User->>Page: Click Mark as contacted
+  Page->>Toast: "Marked Acme Logistics as contacted"

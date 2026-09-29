@@ -1,0 +1,22 @@
+sequenceDiagram
+  autonumber
+  actor Owner
+  participant Agent as frontend-agent (Claude Code)
+  participant Spec as frontend-agent.md + page-registry.json
+  participant Code as Next.js codebase
+  participant Check as npm run check
+
+  Owner->>Agent: Page request (PAGE_REQUEST_TEMPLATE.md)
+  Agent->>Spec: Read design system, layout contract, locked pages
+  Agent->>Code: Add or edit page, register it as draft
+  loop Until every check passes
+    Agent->>Check: typecheck, build, verify
+    Check-->>Agent: Pass or failures
+    alt A check fails
+      Agent->>Code: Fix the error
+    end
+  end
+  Agent-->>Owner: Added, Changed, Not done yet, Next step, Checks
+  Owner->>Owner: Review the page in the browser
+  Owner->>Spec: npm run confirm -- /dashboard/page
+  Note over Spec,Check: Confirmed pages can be improved,<br/>never deleted. verify fails if one goes missing.

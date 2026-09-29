@@ -1,0 +1,31 @@
+sequenceDiagram
+  autonumber
+  actor User
+  participant UI as Live check page (browser)
+  participant Route as /api/live/[ticker] (Next.js server)
+  participant Lib as lib/sec.ts
+  participant SEC as SEC EDGAR
+  participant Crusoe as Crusoe LLM (optional)
+
+  User->>UI: Types NKE or clicks an example
+  UI->>UI: Show loading pulse line
+  UI->>Route: GET /api/live/NKE
+  Route->>Lib: getLiveSignals("NKE")
+  Lib->>SEC: GET company_tickers.json (cached 1h)
+  SEC-->>Lib: ticker to CIK
+  par Filings and revenue in parallel
+    Lib->>SEC: GET submissions/CIK.json
+    SEC-->>Lib: recent 8-K filings with item codes
+  and
+    Lib->>SEC: GET companyconcept revenue (XBRL)
+    SEC-->>Lib: quarterly revenue
+  end
+  Lib->>Lib: Score 8-K items (layoffs, bankruptcy, exec change) and revenue trend
+  Lib->>Lib: Pick next step from strongest signal
+  opt CRUSOE_API_KEY is set
+    Lib->>Crusoe: Explain these facts in 2 sentences
+    Crusoe-->>Lib: Plain-English explanation
+  end
+  Lib-->>Route: LiveResult JSON
+  Route-->>UI: 200 JSON (or 404 with a helpful message)
+  UI-->>User: Risk ring, reasons, revenue bars, filing links

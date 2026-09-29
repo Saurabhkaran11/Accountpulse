@@ -1,0 +1,33 @@
+sequenceDiagram
+  autonumber
+  actor CSM as User or daily scheduler
+  participant UI as Dashboard
+  participant API as FastAPI /scan
+  participant Merge as Merge.dev
+  participant Brave as Brave Search
+  participant SW as Similarweb
+  participant Crusoe as Crusoe LLM
+  participant Critic as OpenRouter to Nebius
+  participant Graph as Neo4j
+
+  CSM->>UI: Click Run scan
+  UI->>API: GET /scan
+  API->>Merge: List accounts and open tickets
+  Merge-->>API: Accounts
+  loop For each account
+    API->>Brave: News about the customer (last month)
+    Brave-->>API: Headlines
+    API->>SW: Competitor traffic, last 90 days
+    SW-->>API: Visits change %
+    API->>Crusoe: Score risk from account, news, momentum
+    Crusoe-->>API: risk_score, reasons, play (JSON)
+    API->>Critic: Is this verdict justified?
+    Critic-->>API: approve or veto with note
+    alt Critic vetoes
+      API->>API: Cap score at 50 and add veto reason
+    end
+    API->>Graph: MERGE Account, Signal, Competitor
+  end
+  API->>API: Sort by risk, total revenue at risk
+  API-->>UI: Accounts with reasons and next steps
+  UI-->>CSM: Overview updates, toast "Scan complete"

@@ -1,0 +1,28 @@
+sequenceDiagram
+  autonumber
+  actor User
+  participant Search as Top search bar
+  participant Chat as Ask AI page
+  participant Client as lib/ai.ts
+  participant API as FastAPI /ask
+  participant Crusoe as Crusoe LLM
+  participant Graph as Neo4j (planned)
+
+  User->>Search: Types "who should I call today"
+  Search->>Chat: Open /dashboard/ask?q=...
+  Chat->>Client: askAccountPulse(question)
+  alt NEXT_PUBLIC_API_URL is set
+    Client->>API: POST /ask {question}
+    API->>API: Load latest scan results
+    opt Planned: text-to-Cypher
+      API->>Graph: Generated Cypher query
+      Graph-->>API: Matching accounts
+    end
+    API->>Crusoe: Answer using only this data
+    Crusoe-->>API: 2-3 sentence answer
+    API-->>Client: {answer, accounts, engine: "crusoe"}
+  else API missing or failing
+    Client->>Client: Demo answer from lib/data.ts
+  end
+  Client-->>Chat: AskResult
+  Chat-->>User: Answer bubble, account chips, "Answered by ..."
