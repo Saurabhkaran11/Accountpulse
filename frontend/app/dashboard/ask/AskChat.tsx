@@ -12,7 +12,7 @@ import { ArrowUp, Sparkles } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { AiBadge, GlassPanel, PageHeader, RiskBadge } from "@/components/ui";
 import { useUser } from "@/components/Providers";
-import { askAccountPulse, suggestedQuestions, type AskResult } from "@/lib/ai";
+import { askAccountPulse, getVisitorKey, setVisitorKey, suggestedQuestions, type AskResult } from "@/lib/ai";
 
 interface Message {
   id: number;
@@ -27,6 +27,7 @@ export function AskChat() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [thinking, setThinking] = useState(false);
+  const [aiKey, setAiKey] = useState(getVisitorKey());
   const endRef = useRef<HTMLDivElement>(null);
   const askedFromUrl = useRef(false);
 
@@ -136,6 +137,25 @@ export function AskChat() {
           )}
           <div ref={endRef} />
         </div>
+
+        <details className="mb-3 text-sm">
+          <summary className="cursor-pointer font-medium">{aiKey ? "Using your OpenRouter key" : "Using demo answers. Add your own AI key"}</summary>
+          <label htmlFor="ai-key" className="mt-2 block font-medium">Your OpenRouter API key (optional)</label>
+          <input
+            id="ai-key"
+            type="password"
+            autoComplete="off"
+            spellCheck={false}
+            value={aiKey}
+            onChange={(e) => { setAiKey(e.target.value); setVisitorKey(e.target.value); }}
+            placeholder="sk-or-..."
+            className="clay-inset mt-1 w-full rounded-xl px-3 py-2 outline-none"
+          />
+          <span className="mt-1 block text-slate">
+            Billed to your account. It is not saved or logged, and it clears when you reload or close this tab.{" "}
+            <a className="underline" href="https://openrouter.ai/keys" target="_blank" rel="noopener noreferrer">Get a key</a>
+          </span>
+        </details>
 
         {/* Composer */}
         <form

@@ -2,19 +2,16 @@
  * AI helpers used by the "Ask AccountPulse" chat and the rescue-action
  * drafts.
  *
- * TODAY: answers come from a small rule-based demo over lib/data.ts so the
- * UI works offline and on stage.
- * NEXT STEP: set NEXT_PUBLIC_API_URL and implement POST /ask on the agent
- * API. That endpoint should turn the question into a Neo4j Cypher query,
- * run it, and ask Crusoe to phrase the answer. The response shape below
- * (AskResult) is the contract, so the chat page does not need to change.
+ * With a visitor's OpenRouter key, /api/ask answers with a real model. A rejected key
+ * shows its error. Without a key, answers come from a small rule-based demo over
+ * lib/data.ts, or from the optional agent API if NEXT_PUBLIC_API_URL is set.
  */
 import { accounts, competitors, formatMoney, riskLevel, type Account } from "./data";
 
 export interface AskResult {
   answer: string;
   accounts: Account[];
-  engine: "demo" | "crusoe"; // shown under each answer so judges can see the model
+  engine: "demo" | "crusoe" | "your-key"; // shown under each answer so people can see what answered
 }
 
 export const suggestedQuestions = [
@@ -26,7 +23,26 @@ export const suggestedQuestions = [
 
 const API = process.env.NEXT_PUBLIC_API_URL;
 
+// The visitor's OpenRouter key. Kept in memory only, so it clears when the tab reloads or closes.
+let visitorKey = "";
+export const setVisitorKey = (key: string) => { visitorKey = key.trim(); };
+export const getVisitorKey = () => visitorKey;
+
 export async function askAccountPulse(question: string): Promise<AskResult> {
+  if (visitorKey) {
+    try {
+      const res = await fetch("/api/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-openrouter-key": visitorKey },
+        body: JSON.stringify({ question }),
+      });
+      const data = await res.json();
+      if (res.ok) return data as AskResult;
+      return { answer: data.error || "Something went wrong. Try again.", accounts: [], engine: "your-key" };
+    } catch {
+      return { answer: "Could not reach the server. Try again.", accounts: [], engine: "your-key" };
+    }
+  }
   if (API) {
     try {
       const res = await fetch(`${API}/ask`, {

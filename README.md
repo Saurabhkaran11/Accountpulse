@@ -5,6 +5,16 @@
 
 ![System architecture](docs/diagrams/00-system-architecture.png)
 
+## Deploy the public demo
+
+Import this repo into Vercel and set the root directory to `frontend`. Leave `NEXT_PUBLIC_API_URL` empty.
+
+- **Demo data:** the dashboard runs on built-in sample accounts, with no keys.
+- **Ask chat:** visitors can add their own OpenRouter key. It's used for one request and never stored or logged.
+- **Live page:** real SEC EDGAR filings, no key needed. Set `SEC_USER_AGENT` to your name and email, as the SEC requires.
+
+**Don't deploy the backend publicly.** It has no login and spends the owner's keys, so keep it private for your own demos.
+
 ## Live demo in 3 terminals
 
 - **1. Backend:** `cd backend && source .venv/bin/activate && uvicorn app:app --reload --port 8000`
